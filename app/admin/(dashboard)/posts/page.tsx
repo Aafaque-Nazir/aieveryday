@@ -8,6 +8,16 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Badge } from "@/components/ui/badge";
 import { Search } from "@/components/ui/search";
 
+type PostWithAuthor = {
+  id: string;
+  title: string;
+  slug: string;
+  published: boolean;
+  views: number;
+  createdAt: Date;
+  author: { name: string | null };
+};
+
 export default async function AdminPostsPage(props: {
   searchParams?: Promise<{
     query?: string;
@@ -54,7 +64,7 @@ export default async function AdminPostsPage(props: {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {posts.map((post) => (
+                {posts.map((post: PostWithAuthor) => (
                     <TableRow key={post.id}>
                         <TableCell className="font-medium">{post.title}</TableCell>
                         <TableCell>
