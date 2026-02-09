@@ -141,7 +141,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
       <div className="mt-12 pt-8 border-t flex gap-2 flex-wrap">
         <span className="font-semibold text-sm self-center mr-2">Tags:</span>
-        {post.tags.map(tag => (
+        {post.tags.map((tag: { slug: string; name: string }) => (
             <Badge key={tag.slug} variant="outline">#{tag.name}</Badge>
         ))}
       </div>
