@@ -49,6 +49,17 @@ export default function EditPostForm({ post }: { post: any }) {
               <Input id="featuredImage" name="featuredImage" defaultValue={post.featuredImage || ""} />
           </div>
 
+          <div className="grid gap-2">
+              <Label htmlFor="tags">Tags (comma separated)</Label>
+              <Input 
+                id="tags" 
+                name="tags" 
+                defaultValue={post.tags?.map((t: any) => t.name).join(', ') || ""} 
+                placeholder="nextjs, react, typescript"
+              />
+              <p className="text-xs text-muted-foreground">Enter tags separated by commas. New tags will be created automatically.</p>
+          </div>
+
           <div className="flex items-center space-x-2">
               <Switch id="published" name="published" defaultChecked={post.published} />
               <Label htmlFor="published">Published</Label>

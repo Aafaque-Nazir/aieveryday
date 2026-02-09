@@ -2,8 +2,11 @@ import { PrismaClient } from '@prisma/client'
 import { PrismaLibSql } from '@prisma/adapter-libsql'
 
 const prismaClientSingleton = () => {
+  // Convert libsql:// to https:// for HTTP connections
+  const dbUrl = process.env.DATABASE_URL!.replace('libsql://', 'https://');
+  
   const adapter = new PrismaLibSql({
-    url: process.env.DATABASE_URL!,
+    url: dbUrl,
     authToken: process.env.TURSO_AUTH_TOKEN
   })
   return new PrismaClient({ adapter })

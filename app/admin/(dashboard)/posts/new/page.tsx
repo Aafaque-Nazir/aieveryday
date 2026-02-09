@@ -51,6 +51,12 @@ export default function NewPostPage() {
                 <Input id="featuredImage" name="featuredImage" placeholder="https://example.com/image.jpg" />
             </div>
 
+            <div className="grid gap-2">
+                <Label htmlFor="tags">Tags (comma separated)</Label>
+                <Input id="tags" name="tags" placeholder="nextjs, react, typescript" />
+                <p className="text-xs text-muted-foreground">Enter tags separated by commas. New tags will be created automatically.</p>
+            </div>
+
             <div className="flex items-center space-x-2">
                 <Switch id="published" name="published" />
                 <Label htmlFor="published">Publish immediately</Label>

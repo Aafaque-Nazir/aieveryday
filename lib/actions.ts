@@ -38,7 +38,18 @@ const FormSchema = z.object({
   excerpt: z.string().optional(),
   featuredImage: z.string().optional(),
   published: z.string().optional(),
+  tags: z.string().optional(),
 });
+
+// Helper function to create slug from string
+function createSlug(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
 
 export async function createPost(prevState: any, formData: FormData) {
   const session = await auth();
@@ -53,6 +64,7 @@ export async function createPost(prevState: any, formData: FormData) {
     excerpt: formData.get("excerpt"),
     featuredImage: formData.get("featuredImage"),
     published: formData.get("published"),
+    tags: formData.get("tags"),
   });
 
   if (!validatedFields.success) {
@@ -61,9 +73,33 @@ export async function createPost(prevState: any, formData: FormData) {
     };
   }
 
-  const { title, slug, content, excerpt, featuredImage, published } = validatedFields.data;
+  const { title, slug, content, excerpt, featuredImage, published, tags } = validatedFields.data;
+
+  // Parse tags - comma separated
+  const tagNames = tags
+    ? tags.split(',').map(t => t.trim()).filter(t => t.length > 0)
+    : [];
 
   try {
+    // Create or find tags
+    const tagConnections = [];
+    for (const tagName of tagNames) {
+      const tagSlug = createSlug(tagName);
+      
+      // Upsert tag - create if not exists
+      let tag = await prisma.tag.findUnique({ where: { slug: tagSlug } });
+      if (!tag) {
+        tag = await prisma.tag.create({
+          data: {
+            id: `tag-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            name: tagName,
+            slug: tagSlug,
+          }
+        });
+      }
+      tagConnections.push({ id: tag.id });
+    }
+
     await prisma.post.create({
       data: {
         title,
@@ -73,9 +109,14 @@ export async function createPost(prevState: any, formData: FormData) {
         featuredImage: featuredImage || null,
         published: published === "on",
         authorId: session.user.id,
+        updatedAt: new Date(),
+        tags: {
+          connect: tagConnections
+        }
       },
     });
   } catch (error) {
+    console.error("Create Post Error:", error);
     return {
       message: "Database Error: Failed to Create Post.",
     };
@@ -100,6 +141,7 @@ export async function updatePost(prevState: any, formData: FormData) {
     excerpt: formData.get("excerpt"),
     featuredImage: formData.get("featuredImage"),
     published: formData.get("published"),
+    tags: formData.get("tags"),
   });
 
   if (!validatedFields.success) {
@@ -108,9 +150,32 @@ export async function updatePost(prevState: any, formData: FormData) {
     };
   }
 
-  const { title, slug, content, excerpt, featuredImage, published } = validatedFields.data;
+  const { title, slug, content, excerpt, featuredImage, published, tags } = validatedFields.data;
+
+  // Parse tags - comma separated
+  const tagNames = tags
+    ? tags.split(',').map(t => t.trim()).filter(t => t.length > 0)
+    : [];
 
   try {
+    // Create or find tags
+    const tagConnections = [];
+    for (const tagName of tagNames) {
+      const tagSlug = createSlug(tagName);
+      
+      let tag = await prisma.tag.findUnique({ where: { slug: tagSlug } });
+      if (!tag) {
+        tag = await prisma.tag.create({
+          data: {
+            id: `tag-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            name: tagName,
+            slug: tagSlug,
+          }
+        });
+      }
+      tagConnections.push({ id: tag.id });
+    }
+
     await prisma.post.update({
       where: { id },
       data: {
@@ -120,9 +185,13 @@ export async function updatePost(prevState: any, formData: FormData) {
         excerpt: excerpt || null,
         featuredImage: featuredImage || null,
         published: published === "on",
+        tags: {
+          set: tagConnections // Replace all existing tags with new ones
+        }
       },
     });
   } catch (error) {
+    console.error("Update Post Error:", error);
     return {
       message: "Database Error: Failed to Update Post.",
     };
