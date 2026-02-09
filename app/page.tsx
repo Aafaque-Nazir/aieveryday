@@ -40,7 +40,7 @@ export default async function Home() {
                 <Sparkles className="mr-1 h-3 w-3" />
                 <span>New Features Live</span>
               </div>
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-blue-500 animate-gradient-x">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none text-primary">
                 Welcome to the Future of Blogging
               </h1>
               <p className="max-w-[600px] text-muted-foreground md:text-xl">

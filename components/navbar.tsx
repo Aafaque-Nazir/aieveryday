@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { Menu, Moon, Sun, Laptop } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 const links = [
   { href: "/", label: "Home" },
   { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function Navbar() {
@@ -106,25 +107,51 @@ export function Navbar() {
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right">
-              <div className="flex flex-col gap-6 mt-10">
-                {links.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={cn(
-                      "text-lg font-medium transition-colors hover:text-primary",
-                      pathname === link.href
-                        ? "text-primary"
-                        : "text-foreground"
-                    )}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-{/* <Button asChild className="w-full">
-                    <Link href="/admin/login">Admin Dashboard</Link>
-                </Button> */}
+            <SheetContent side="right" className="w-[300px] sm:w-[400px] border-l-2 border-primary/20">
+              <div className="flex flex-col h-full">
+                <div className="flex flex-col gap-4 py-6 border-b">
+                  <SheetClose asChild>
+                    <Link href="/" className="flex items-center gap-2 px-2">
+                      <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold text-xl">
+                        B
+                      </div>
+                      <span className="font-bold text-xl tracking-tight">BlogPlatform</span>
+                    </Link>
+                  </SheetClose>
+                  <p className="text-sm text-muted-foreground px-2">
+                    Modern stories for modern developers.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-2 mt-6">
+                  {links.map((link) => (
+                    <SheetClose asChild key={link.href}>
+                      <Link
+                        href={link.href}
+                        className={cn(
+                          "flex items-center gap-4 px-4 py-3 text-lg font-medium rounded-md transition-all",
+                          "hover:bg-accent hover:text-accent-foreground",
+                          pathname === link.href
+                            ? "bg-primary/10 text-primary border-l-4 border-primary font-bold"
+                            : "text-foreground/80"
+                        )}
+                      >
+                        {link.label === "Home" && <Laptop className="h-5 w-5" />}
+                        {link.label === "Blog" && <Laptop className="h-5 w-5" />}
+                        {link.label}
+                        <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                      </Link>
+                    </SheetClose>
+                  ))}
+                </div>
+
+                <div className="mt-auto py-6 border-t">
+                   <div className="flex flex-col items-center justify-center gap-4 text-center">
+                      <p className="text-xs text-muted-foreground w-3/4">
+                        &copy; {new Date().getFullYear()} BlogPlatform. All rights reserved.
+                      </p>
+                   </div>
+                </div>
               </div>
             </SheetContent>
           </Sheet>

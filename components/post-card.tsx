@@ -35,7 +35,7 @@ export function PostCard({ post, index = 0 }: PostCardProps) {
       whileHover={{ y: -5 }}
     >
       <Link href={`/blog/${post.slug}`}>
-        <Card className="h-full overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm transition-all hover:shadow-lg dark:hover:shadow-primary/5 hover:border-primary/50 group">
+        <Card className="h-full overflow-hidden border-border bg-card transition-all hover:shadow-lg dark:hover:shadow-primary/5 hover:border-primary group">
           <div className="relative aspect-video overflow-hidden bg-muted">
              {post.featuredImage ? (
                 <img 
