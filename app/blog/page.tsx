@@ -94,7 +94,7 @@ export default async function BlogPage({
 
       {finalPosts.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {finalPosts.map((post, idx) => (
+          {finalPosts.map((post: any, idx: number) => (
             //@ts-ignore
             <PostCard key={post.slug} post={post} index={idx} />
           ))}
