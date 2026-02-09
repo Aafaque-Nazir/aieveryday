@@ -78,7 +78,7 @@ export default async function Home() {
         
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {displayPosts.length > 0 ? (
-            displayPosts.map((post, idx) => (
+            displayPosts.map((post: any, idx: number) => (
               <PostCard key={post.slug} post={post} index={idx} />
             ))
           ) : (
