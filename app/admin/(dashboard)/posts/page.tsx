@@ -18,6 +18,8 @@ type PostWithAuthor = {
   author: { name: string | null };
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminPostsPage(props: {
   searchParams?: Promise<{
     query?: string;

@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import prisma from "@/lib/prisma";
 import { FileText, Users, Eye } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboard() {
   const postCount = await prisma.post.count();
   const publishedCount = await prisma.post.count({ where: { published: true } });

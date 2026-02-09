@@ -5,7 +5,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { PostCard } from "@/components/post-card";
 import { motion } from "framer-motion";
 
-export const revalidate = 60; // Revalidate every minute
+export const dynamic = 'force-dynamic';
 
 async function getPosts() {
   try {

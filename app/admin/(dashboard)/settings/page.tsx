@@ -11,6 +11,8 @@ import { updateProfile } from "@/lib/actions";
 import { ProfileForm } from "./profile-form";
 import { ThemeToggle } from "./theme-toggle";
 
+export const dynamic = 'force-dynamic';
+
 export default async function SettingsPage() {
   const session = await auth();
 

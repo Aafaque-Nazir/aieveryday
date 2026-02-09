@@ -9,7 +9,7 @@ export const metadata = {
   description: "Read our latest articles and insights.",
 };
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 async function getPosts(search?: string) {
   const where: any = { published: true };

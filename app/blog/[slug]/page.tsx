@@ -8,7 +8,7 @@ import { ArrowLeft, User, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 interface PostPageProps {
   params: Promise<{ slug: string }>;
@@ -106,7 +106,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
       <div className="space-y-6 text-center mb-12">
         <div className="flex gap-2 justify-center">
-            {post.categories.map(cat => (
+            {post.categories.map((cat: { slug: string; name: string }) => (
                 <Badge key={cat.slug} variant="secondary">{cat.name}</Badge>
             ))}
         </div>
