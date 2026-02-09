@@ -80,7 +80,7 @@ async function RecentPosts() {
 
   return (
     <div className="space-y-8">
-      {recentPosts.map(post => (
+      {recentPosts.map((post: { id: string; title: string; published: boolean; author: { name: string | null } }) => (
         <div key={post.id} className="flex items-center">
           <div className="ml-4 space-y-1">
             <p className="text-sm font-medium leading-none">{post.title}</p>
